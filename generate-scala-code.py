@@ -17,16 +17,7 @@ def camelize(s):
 
 
 def get_rows(schema, depth=1, python=False):
-    # assert schema
-    # if 'properties' not in schema:
-    #
-    #     assert schema['items']['$ref'], schema
-    #     schema = definitions[schema['items']['$ref'].split('/')[-1]]
-    #     print "NEW SCHEMA", schema
-    #     # raise Exception(schema)
     if 'properties' not in schema:
-        print "******"
-        print schema
         raise Exception('HELL!!')
 
     def render_bool(thing, value):
@@ -104,6 +95,7 @@ def get_rows(schema, depth=1, python=False):
         else:
             print >>sys.stderr, "TROUBLE", prop, str(meta)[:100]
 
+
 def write_rows(rows, indentation=' ' * 2, python=False):
     if python:
         code = 'StructType([\n'
@@ -119,20 +111,6 @@ def write_rows(rows, indentation=' ' * 2, python=False):
     else:
         code += '\n{}))'.format(indentation[:-2])
 
-    # if python:
-    #     def replacer(match):
-    #         a, b = match.groups()
-    #         return '{}={}'.format(a, b.title())
-    #     code = re.sub(
-    #         r'(\w+) = (true|false)',
-    #         replacer,
-    #         code,
-    #     )
-    #     # code = code.replace('StringType', 'StringType()')
-    #     # code = code.replace('BooleanType', 'BooleanType()')
-    #     # code = code.replace('nullable = false', 'nullable=False')
-    #     # code = code.replace('nullable = true', 'nullable=True')
-    #     # code = code.replace('containsNull = false', 'containsNull=False')
     return code
 
 
@@ -151,7 +129,7 @@ def replace_definitions(schema, definitions):
         print str(schema)
         raise Problem
 
-# definitions =
+
 def run(schema_uri, python=False):
     if '://' in schema_uri and schema_uri.startswith('http'):
         import requests
@@ -194,6 +172,3 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
-    # import sys
-    # schema = json.load(open(sys.argv[1]))
-    # sys.exit(run(schema))
